@@ -1,3 +1,7 @@
+from pint import UnitRegistry
+import numpy as np
+ureg = UnitRegistry()
+
 def newton_raphson(f, df, x0, tol=1e-6, max_iter=100):
     """
     Newton-Raphson method for finding roots of a function.
@@ -65,24 +69,31 @@ def secant_method(f, x0, x1, tol=1e-6, max_iter=100):
 # Example usage:
 if __name__ == "__main__":
 
+    # Time of flight of a ball with valocity v0 and launch angle theta
+
+    v0 = 10 # m/s 
+    g = 9.81 #m/s local gravity
+    theta_deg = 60 * ureg.degree
+    theta = theta_deg.to(ureg.rad)
+    print(theta)
     # Define the function and its derivative
     def f(x):
-        return x**2 -
+        return v0 *np.sin(theta) *x - 1/2*g*x**2
 
     def df(x):
-        return 2 * x
+        return v0 *np.sin(theta) - g*x
 
     # Initial guess
-    initial_guess = 6
+    initial_guess = 1000
+    initial_guess2 = 999
 
     # Apply Newton-Raphson method
     root, iterations = newton_raphson(f, df, initial_guess)
 
     # Print results
-    print(f"Approximate root: {root}")
+    print(f"newton_raphson \n Approximate root: {root}")
     print(f"Iterations: {iterations}")
-    initial_guess2 = 6.2
     root, iterations = secant_method(f, initial_guess, initial_guess2)
 
-    print(f"Approximate root: {root}")
+    print(f" secant_method \n Approximate root: {root}")
     print(f"Iterations: {iterations}")

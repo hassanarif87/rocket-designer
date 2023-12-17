@@ -1,5 +1,5 @@
 [package]
-name = "RocketDesign"
+name = "rocket-designer"
 version = "0.1.0"
 edition = "2021"
 
