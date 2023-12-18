@@ -1,0 +1,24 @@
+import numpy as np
+
+
+def rocket_equation(I_sp, m_0, m_f):
+    g_0 = 9.81  # Acceleration due to gravity on Earth's surface in m/s^2
+    delta_v = I_sp * g_0 * np.log(m_0 / m_f)
+    return delta_v
+
+
+# Example usage:
+I_sp = 300  # Specific impulse in seconds
+initial_mass = 1000  # Initial mass of the rocket in kilograms
+final_mass = 200  # Final mass of the rocket in kilograms (after burning propellant)
+
+result = rocket_equation(I_sp, initial_mass, final_mass)
+print(f"Change in velocity (\u0394V): {result:.2f} m/s")
+
+n_engines = 9
+isp_s1 = 300
+engine_thrust_s1 = 200000  # N
+isp_s2 = 360
+engine_thrust_s2 = 200000  # N
+
+min_thurst2_weight = 1.2

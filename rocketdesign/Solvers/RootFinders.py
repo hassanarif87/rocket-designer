@@ -70,12 +70,11 @@ def secant_method(f, x0, x1, tol=1e-6, max_iter=100):
 if __name__ == "__main__":
 
     # Time of flight of a ball with valocity v0 and launch angle theta
-
-    v0 = 10 # m/s 
-    g = 9.81 #m/s local gravity
+    
+    v0 = 10  # m/s 
+    g = 9.81  #m/s local gravity
     theta_deg = 60 * ureg.degree
-    theta = theta_deg.to(ureg.rad)
-    print(theta)
+    theta = theta_deg.to(ureg.rad).magnitude
     # Define the function and its derivative
     def f(x):
         return v0 *np.sin(theta) *x - 1/2*g*x**2
