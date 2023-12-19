@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.optimize import minimize, Bounds, LinearConstraint, NonlinearConstraint
+from scipy.optimize import minimize, NonlinearConstraint
 
 # Size a 2 stage Rocket
 def rocket_equation(I_sp, m_0, m_f):
@@ -60,7 +60,7 @@ non_linear_constr = NonlinearConstraint(
     constraint_func, [min_thurst2_weight_s1, min_thurst2_weight_s2], [np.inf, np.inf])
 
 def obj_func(z):
-    dv_total, t2w_stacked, t2w_s2 = calculated_vehicle_deltav(*z)
+    dv_total, _, _ = calculated_vehicle_deltav(*z)
     return (target_deltaV - dv_total)**2
 
 initial_guess = [dry_mass_s1_guess, dry_mass_s2_guess]
@@ -73,5 +73,11 @@ print(f"Change in velocity (\u0394V): {dv_total:.2f} m/s")
 print(f"Stacked thrust to Weight = {t2w_stacked}")
 print(f"S2 thrust to Weight = {t2w_s2}")
 
-print()
+dry_mass_s1, dry_mass_s2 = result.x
+wetmass_s1 = dry_mass_s1 / mass_fraction_s1 + dry_mass_s1
+wetmass_s2 = dry_mass_s2 / mass_fraction_s2 + dry_mass_s2
+
+initial_mass_stacked = wetmass_s1 + wetmass_s2 + payload
+
+print(f"Total Mass = {initial_mass_stacked}")
 
