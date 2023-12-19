@@ -20,9 +20,16 @@ def identiy_mul(x):
 
 def quat_mat(q):
     return np.array([
-        [],
-        [],
-        [],
-        []
+        [q[0] , -q[1], -q[2], -q[3]],
+        [q[1] , q[0], q[3], -q[2]],
+        [q[2] , -q[3], q[0], q[1]],
+        [q[3] , q[2], -q[1], q[0]]
     ])
-quat_conj_mat
+
+def quat_conj_mat(q):
+    return np.array([
+        [q[0] , -q[1], -q[2], -q[3]],
+        [q[1] , q[0], -q[3], q[2]],
+        [q[2] , q[3], q[0], -q[1]],
+        [q[3] , -q[2], q[1], q[0]]
+    ])
