@@ -19,6 +19,8 @@ def identiy_mul(x):
     return np.identity(3) * x
 
 def quat_mat(q):
+    """Eq 109 pg 14
+    """
     return np.array([
         [q[0] , -q[1], -q[2], -q[3]],
         [q[1] , q[0], q[3], -q[2]],
@@ -27,6 +29,8 @@ def quat_mat(q):
     ])
 
 def quat_conj_mat(q):
+    """Eq 111 pg 14
+    """
     return np.array([
         [q[0] , -q[1], -q[2], -q[3]],
         [q[1] , q[0], -q[3], q[2]],
