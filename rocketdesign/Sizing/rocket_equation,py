@@ -54,8 +54,6 @@ def constraint_func(z):
     _, t2w_stacked, t2w_s2 = calculated_vehicle_deltav(*z)
     return np.array([t2w_stacked, t2w_s2 ])
 
-
-
 non_linear_constr = NonlinearConstraint(
     constraint_func, [min_thurst2_weight_s1, min_thurst2_weight_s2], [np.inf, np.inf])
 
