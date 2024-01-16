@@ -1,10 +1,9 @@
 import numpy as np
 from scipy.optimize import minimize, NonlinearConstraint
-
+STANDARD_GRAV = 9.80665 # m/s/s https://en.wikipedia.org/wiki/Standard_gravity
 # Size a 2 stage Rocket
 def rocket_equation(I_sp, m_0, m_f):
-    g_0 = 9.81  # Acceleration due to gravity on Earth's surface in m/s^2
-    delta_v = I_sp * g_0 * np.log(m_0 / m_f)
+    delta_v = I_sp * STANDARD_GRAV * np.log(m_0 / m_f)
     return delta_v
 
 
@@ -40,8 +39,8 @@ def calculated_vehicle_deltav(dry_mass_s1, dry_mass_s2):
 
     initial_s2 = wetmass_s2 + payload
     final_s2 = dry_mass_s2 + payload
-    t2w_stacked = 9*engine_thrust_s1/ initial_mass_stacked/9.81 
-    t2w_s2 = engine_thrust_s2/ initial_s2 /9.81
+    t2w_stacked = 9*engine_thrust_s1/ initial_mass_stacked/STANDARD_GRAV
+    t2w_s2 = engine_thrust_s2/ initial_s2 /STANDARD_GRAV
 
     result_stacked = rocket_equation(isp_s1, initial_mass_stacked, final_stacked)
 
