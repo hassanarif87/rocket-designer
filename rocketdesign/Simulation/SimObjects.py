@@ -1,7 +1,8 @@
 import numpy as np
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from rocketdesign.utils.Quaternions import quat_rate_mat_conj
-
+from rocketdesign.utils.Rotations import mat_from_quat
+from typing import Any
 
 @dataclass
 class State:
@@ -61,35 +62,57 @@ class Body:
     mass: float
     moi: np.array
     com: np.array
-    moi_inv: np.array
+    moi_inv: np.array = field(init = False)
+    force_obj_list: list[Any] = field(default_factory=list)
+    
+    def __post_init__(self):
+        self.moi_inv = np.linalg.inv(self.moi)
+
     @classmethod
     def default(cls):
         return cls(
             mass=1.0,
             moi=np.identity(3),
             com=np.array([0, 0, 0]),
-            moi_inv=np.identity(3)
         )
     @staticmethod
     def grav(r_vec):
         return get_gravaty(r_vec)
 
-    def forcetorque(self, q_I2B):
-        """Sums all forces in the body frame and convertes them to the I frame
+    def add_force_object(self, obj):
+        self.force_obj_list.append(obj)
+
+    def forcetorque_collector(self, state):
+        """Iterates through force objects attached to the Body and
+        collects and calculates the forces and moments about the Bodys
+        center of mass
 
         Args:
             state : Current state vector of the Body
         Returns:
-            forces_I : Forces in the inerital frame
+            forces : Forces in the body frame
         """
-        return np.zeros([3]), np.array([-1,0,0])
+        sum_force_body = np.zeros(3)
+        sum_torque_body = np.zeros(3)
+
+        for force_obj in self.force_obj_list:
+            dcm_obj2body = np.array(force_obj.dcm_obj2body)
+            sum_force_body += dcm_obj2body @ force_obj.force
+
+            # moment_arm = self.com - force_obj.location
+            # torque_body += np.cross(force_obj.moment, force_body)
+            # # Transform from force obj to body frame
+            # sum_torque_body += dcm_obj2body @ torque_body
+        return sum_force_body, sum_torque_body
 
     def derivative(self, t, state):
         d_pos = state[3:6]
         q_I2B = state[6:10]
         ang_vel_B = state[10:]
+        forces, torques = self.forcetorque_collector(state)
+
+        forces_I  = mat_from_quat(q_I2B).transpose() @ forces
         # Translational equations of motion in the inertial coordinate system
-        forces_I, torques = self.forcetorque(q_I2B)
         non_grav_accel = forces_I / self.mass
         d_vel_I = non_grav_accel + self.grav(state[0:3])
 
