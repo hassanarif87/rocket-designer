@@ -92,7 +92,7 @@ class Body:
         Returns:
             forces : Forces in the body frame
         """
-        sum_force_body = np.zeros(3)
+        sum_force_body = np.array([0,0,0]) #np.zeros(3)
         sum_torque_body = np.zeros(3)
 
         for force_obj in self.force_obj_list:

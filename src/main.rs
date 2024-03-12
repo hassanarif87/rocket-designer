@@ -13,8 +13,8 @@ fn equations_of_motion(_t: f64, y: &[f64], dydt: &mut [f64]) {
 
 fn main() {
     // Initial conditions
-    let initial_position = [0.0, 0.0];
-    let initial_velocity = [1.0, 1.0];
+    let initial_position: [f64; 2] = [0.0, 0.0];
+    let initial_velocity: [f64; 2] = [1.0, 1.0];
     let initial_conditions = initial_position
         .iter()
         .chain(initial_velocity.iter())
@@ -26,16 +26,16 @@ fn main() {
     let t_eval = linspace(t_span.0, t_span.1, 100);
 
     // Integrate the equations of motion
-    let mut integrator = Dopri5::new(equations_of_motion, t_span.0, &initial_conditions, t_span.1);
-    let result = integrator.integrate(&t_eval).unwrap();
+    //let mut integrator = Dopri5::new(equations_of_motion, t_span.0, &initial_conditions, t_span.1);
+    //let result = integrator.integrate(&t_eval).unwrap();
 
     // Extracting the results
-    let x: Vec<f64> = result.iter().step_by(4).cloned().collect();
-    let y: Vec<f64> = result.iter().skip(1).step_by(4).cloned().collect();
+    //let x: Vec<f64> = result.iter().step_by(4).cloned().collect();
+    //let y: Vec<f64> = result.iter().skip(1).step_by(4).cloned().collect();
 
     // Plot the trajectory (Note: Plotting in Rust can be more involved and depends on external libraries)
-    println!("x: {:?}", x);
-    println!("y: {:?}", y);
+    println!("x: {:?}", initial_position);
+    println!("y: {:?}", initial_velocity);
 }
 
 // Utility function to create a linspace

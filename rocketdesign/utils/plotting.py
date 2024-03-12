@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+#from plotly.graph_objects.Figure import add_trace
 import numpy as np
 
 def plot_axis(axis=None, id=1, line_type='solid', fig=None):
